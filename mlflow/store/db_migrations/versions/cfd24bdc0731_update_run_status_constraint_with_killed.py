@@ -41,33 +41,35 @@ check_constraint_table_args = [
         name="runs_lifecycle_stage",
     ),
 ]
+# check_constraint_table_args = []
 
 
 def upgrade():
     # In alembic >= 1.7.0, `table_args` is unnecessary since CHECK constraints are preserved
     # during migrations.
-    table_args = (
-        [] if Version(alembic.__version__) >= Version("1.7.0") else check_constraint_table_args
-    )
-    with op.batch_alter_table("runs", table_args=table_args) as batch_op:
-        # Transform the "status" column to an `Enum` and define a new check constraint. Specify
-        # `native_enum=False` to create a check constraint rather than a
-        # database-backend-dependent enum (see https://docs.sqlalchemy.org/en/13/core/
-        # type_basics.html#sqlalchemy.types.Enum.params.native_enum)
-        batch_op.alter_column(
-            "status",
-            type_=Enum(
-                *new_run_statuses,
-                create_constraint=True,
-                native_enum=False,
-            ),
-            existing_type=Enum(
-                *old_run_statuses,
-                create_constraint=True,
-                native_enum=False,
-                name="status",
-            ),
-        )
+    # table_args = (
+    #     [] if Version(alembic.__version__) >= Version("1.7.0") else check_constraint_table_args
+    # )
+    # with op.batch_alter_table("runs", table_args=table_args) as batch_op:
+    #     # Transform the "status" column to an `Enum` and define a new check constraint. Specify
+    #     # `native_enum=False` to create a check constraint rather than a
+    #     # database-backend-dependent enum (see https://docs.sqlalchemy.org/en/13/core/
+    #     # type_basics.html#sqlalchemy.types.Enum.params.native_enum)
+    #     batch_op.alter_column(
+    #         "status",
+    #         type_=Enum(
+    #             *new_run_statuses,
+    #             create_constraint=True,
+    #             native_enum=False,
+    #         ),
+    #         existing_type=Enum(
+    #             *old_run_statuses,
+    #             create_constraint=True,
+    #             native_enum=False,
+    #             name="status",
+    #         ),
+    #     )
+    pass
 
 
 def downgrade():
