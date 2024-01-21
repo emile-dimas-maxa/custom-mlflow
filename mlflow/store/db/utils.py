@@ -49,7 +49,10 @@ from mlflow.store.tracking.dbmodels.models import (
     SqlRun,
     SqlTag,
 )
+from alembic.ddl.impl import DefaultImpl
 
+class SnowflakeImpl(DefaultImpl):
+    __dialect__ = 'snowflake'
 _logger = logging.getLogger(__name__)
 
 MAX_RETRY_COUNT = 15
